@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TaskNotes.MVVM.ViewModels"
+             xmlns:models="clr-namespace:TaskNotes.MVVM.Models"
+             x:Class="TaskNotes.MVVM.Views.HomePageView"
+             x:DataType="vm:TaskGestorViewModel"
+             Title="Mis Tareas">
+
+    <Grid RowDefinitions="*, Auto" Padding="15">
+
+        <CollectionView Grid.Row="0"
+                        ItemsSource="{Binding Tasks}"
+                        SelectionMode="None">
+
+            <CollectionView.EmptyView>
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="No hay tareas pendientes" 
+                           HorizontalTextAlignment="Center" 
+                           TextColor="Gray"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TaskItem">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Eliminar"
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskGestorViewModel}}, Path=DeleteTaskCommand}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame Margin="0,5" Padding="10" BorderColor="LightGray" CornerRadius="8">
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+
+                                <CheckBox IsChecked="{Binding IsCompleted}" 
+                                          Grid.Column="0"
+                                          VerticalOptions="Center"/>
+
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding Title}" 
+                                           FontAttributes="Bold" 
+                                           FontSize="16"
+                                           TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToStrikethroughConverter}}"/>
+                                    <Label Text="{Binding Description}" 
+                                           FontSize="12" 
+                                           TextColor="Gray" 
+                                           LineBreakMode="TailTruncation"/>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center">
+                                    <Label Text="{Binding Priority}" FontSize="10" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Purple, Dark=Plum}"/>
+                                    <Label Text="{Binding DueDate, StringFormat='{0:dd/MM}'}" FontSize="10"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="1"
+                Text="+"
+                FontSize="24"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                HorizontalOptions="End"
+                Margin="0,20,10,20"
+                Clicked="OnAddTaskClicked"/>
+    </Grid>
+</ContentPage>

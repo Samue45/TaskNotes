@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TaskNotes.MVVM.ViewModels"
+             xmlns:models="clr-namespace:TaskNotes.MVVM.Models"
+             x:Class="TaskNotes.MVVM.Views.AddTaskView"
+             x:DataType="vm:TaskGestorViewModel"
+             Title="Nueva Tarea">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <VerticalStackLayout>
+                <Label Text="Título" FontAttributes="Bold"/>
+                <Entry Placeholder="Ej. Comprar leche" 
+                       Text="{Binding NewTaskTitle}" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Descripción" FontAttributes="Bold"/>
+                <Editor Placeholder="Detalles de la tarea..." 
+                        HeightRequest="100"
+                        Text="{Binding NewTaskDescription}" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Fecha Límite" FontAttributes="Bold"/>
+                <DatePicker Date="{Binding NewTaskDate}" 
+                            MinimumDate="01/01/2024"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Prioridad" FontAttributes="Bold"/>
+                <Picker x:Name="PriorityPicker"
+                        SelectedItem="{Binding NewTaskPriority}"
+                        Title="Selecciona prioridad">
+                </Picker>
+            </VerticalStackLayout>
+
+            <Button Text="Guardar Tarea" 
+                    Margin="0,20,0,0"
+                    Command="{Binding AddTaskCommand}"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
