@@ -3,9 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:TaskNotes.MVVM.ViewModels"
              xmlns:models="clr-namespace:TaskNotes.MVVM.Models"
+             xmlns:converters="clr-namespace:TaskNotes.MVVM.Converters"
              x:Class="TaskNotes.MVVM.Views.HomePageView"
              x:DataType="vm:TaskGestorViewModel"
              Title="Mis Tareas">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToStrikethroughConverter x:Key="BoolToStrikethroughConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <Grid RowDefinitions="*, Auto" Padding="15">
 
