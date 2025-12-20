@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using TaskNotes.MVVM.Models; // Asegúrate de que este using coincida con tu modelo TaskItem
+using TaskNotes.MVVM.Models; 
 
 namespace TaskNotes.MVVM.ViewModels;
 
