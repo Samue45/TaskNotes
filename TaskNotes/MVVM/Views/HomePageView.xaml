@@ -39,7 +39,7 @@
                             </SwipeItems>
                         </SwipeView.RightItems>
 
-                        <Frame Margin="0,5" Padding="10" BorderColor="LightGray" CornerRadius="8">
+                        <Border Margin="0,5" Padding="10" Stroke="LightGray" StrokeShape="RoundRectangle 8">
                             <Grid ColumnDefinitions="Auto, *, Auto, Auto">
 
                                 <CheckBox IsChecked="{Binding IsCompleted}" 
@@ -75,20 +75,33 @@
                                 CommandParameter="{Binding .}"/>
 
                             </Grid>
-                        </Frame>
+                        </Border>
                     </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Button Grid.Row="1"
-                Text="+"
-                FontSize="24"
-                WidthRequest="60"
-                HeightRequest="60"
-                CornerRadius="30"
-                HorizontalOptions="End"
-                Margin="0,20,10,20"
-                Clicked="OnAddTaskClicked"/>
+        <HorizontalStackLayout Grid.Row="1" 
+                               HorizontalOptions="End" 
+                               VerticalOptions="End" 
+                               Spacing="10" 
+                               Margin="0,20,10,20">
+
+            <Button Text="🎙️"
+                    FontSize="24"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    CornerRadius="30"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    Clicked="OnShowAudioPopupClicked"/>
+
+            <Button Text="+"
+                    FontSize="24"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    CornerRadius="30"
+                    Clicked="OnAddTaskClicked"/>
+        </HorizontalStackLayout>
     </Grid>
 </ContentPage>

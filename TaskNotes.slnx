@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="TaskNotes/TaskNotes.csproj" />
+  <Project Path="TaskNotes/TaskNotes.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>

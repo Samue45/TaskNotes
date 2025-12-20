@@ -29,13 +29,17 @@
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
-		<WindowsPackageType>None</WindowsPackageType>
+		<WindowsPackageType>MSIX</WindowsPackageType>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<PackageCertificateThumbprint>9DFE365E3385263BF938B23AEAB927B35CC5966C</PackageCertificateThumbprint>
+		<PackageCertificateKeyFile>TaskNotes_TemporaryKey.pfx</PackageCertificateKeyFile>
+		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<DefaultLanguage>es</DefaultLanguage>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -57,18 +61,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="13.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="7.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="ConfigureAwait.Fody" Version="3.3.2" />
 		<PackageReference Include="Fody" Version="6.9.3">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="MVVM\Views\AddTaskView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="MVVM\Views\AudioPopupView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="MVVM\Views\HomePageView.xaml">

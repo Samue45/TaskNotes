@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:TaskNotes.MVVM.ViewModels"
+    x:Class="TaskNotes.MVVM.Views.AudioPopupView"
+    x:DataType="vm:TaskGestorViewModel">
+
+    <Border StrokeShape="RoundRectangle 24"
+            StrokeThickness="0"
+            Background="White"
+            Padding="24"
+            WidthRequest="320"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+        <Border.Shadow>
+            <Shadow Brush="Black" Offset="0,10" Radius="20" Opacity="0.2" />
+        </Border.Shadow>
+
+        <VerticalStackLayout Spacing="20">
+
+            <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                <Label Text="🎙️" FontSize="40" HorizontalOptions="Center" />
+                <Label Text="Dictado por Voz" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       TextColor="{StaticResource Primary}"
+                       HorizontalOptions="Center"/>
+
+                <Label Text="Escuchando..." 
+                       FontSize="12" 
+                       TextColor="Red"
+                       IsVisible="{Binding IsListening}"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+
+            <Border Background="#F5F5F5"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="10"
+                    Margin="0,0,0,0">
+                <ScrollView HeightRequest="120" MinimumHeightRequest="100">
+                    <Label Text="{Binding NewTaskTitle}"
+                           FontSize="16"
+                           TextColor="#333333"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center" />
+                </ScrollView>
+            </Border>
+
+            <VerticalStackLayout Spacing="12">
+
+                <Button Text="Empezar a Escuchar"
+                        Command="{Binding StartListeningCommand}"
+                        CornerRadius="25"
+                        HeightRequest="50"
+                        BackgroundColor="{StaticResource Primary}"
+                        FontAttributes="Bold">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsListening}" Value="True">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Setter Property="Opacity" Value="0.5"/>
+                            <Setter Property="Text" Value="Grabando..."/>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                    <Button Grid.Column="0"
+                            Text="Detener"
+                            Command="{Binding StopListeningCommand}"
+                            IsEnabled="{Binding IsListening}"
+                            CornerRadius="25"
+                            BackgroundColor="#FFEBEB"
+                            TextColor="Red"
+                            FontSize="14" />
+
+                    <Button Grid.Column="1"
+                            Text="Listo"
+                            Clicked="OnCloseClicked"
+                            CornerRadius="25"
+                            BackgroundColor="#F0F0F0"
+                            TextColor="#444444"
+                            FontSize="14" />
+                </Grid>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>
