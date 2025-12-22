@@ -12,9 +12,5 @@ public partial class AddTaskView : ContentPage
 
         // Asignamos el contexto compartido
         BindingContext = viewModel;
-
-        // Llenar el Picker con los valores del Enum (TaskPriority)
-        // Esto se hace aquí para no ensuciar el XAML con helpers si quieres mantenerlo simple
-        PriorityPicker.ItemsSource = Enum.GetValues(typeof(TaskPriority));
     }
 }

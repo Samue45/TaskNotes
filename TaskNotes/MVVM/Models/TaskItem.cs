@@ -49,6 +49,11 @@ public partial class TaskItem : ObservableObject
         }
     }
 
+    partial void OnPriorityChanged(TaskPriority value)
+    {
+        OnPropertyChanged(nameof(PriorityColor));
+    }
+
     public TaskItem()
     {
         Id = Guid.NewGuid().ToString();

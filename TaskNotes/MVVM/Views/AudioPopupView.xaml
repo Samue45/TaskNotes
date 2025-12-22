@@ -11,7 +11,7 @@
             StrokeThickness="0"
             BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
             Padding="24"
-            WidthRequest="320"
+            WidthRequest="360"
             HorizontalOptions="Center"
             VerticalOptions="Center">
 
@@ -19,14 +19,14 @@
             <Shadow Brush="Black" Offset="0,10" Radius="20" Opacity="0.2" />
         </Border.Shadow>
 
-        <VerticalStackLayout Spacing="20">
+        <VerticalStackLayout Spacing="16">
 
             <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
                 <Label Text="🎙️" FontSize="40" HorizontalOptions="Center" />
                 <Label Text="Dictado por Voz" 
                        FontSize="20" 
                        FontAttributes="Bold" 
-                       TextColor="{StaticResource Primary}"
+                       TextColor="{StaticResource TextPrimaryDark}"
                        HorizontalOptions="Center"/>
 
                 <Label Text="Escuchando..." 
@@ -73,8 +73,8 @@
                             Command="{Binding StopListeningCommand}"
                             IsEnabled="{Binding IsListening}"
                             CornerRadius="25"
-                            BackgroundColor="{StaticResource ErrorLight}"
-                            TextColor="{StaticResource Error}"
+                            BackgroundColor="{StaticResource Error}"
+                            TextColor="{StaticResource TextPrimaryDark}"
                             FontSize="14" />
 
                     <Button Grid.Column="1"
