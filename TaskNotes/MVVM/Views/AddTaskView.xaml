@@ -6,7 +6,7 @@
              x:Class="TaskNotes.MVVM.Views.AddTaskView"
              x:DataType="vm:TaskGestorViewModel"
              Title="Nueva Tarea"
-             BackgroundColor="{AppThemeBinding Light=White, Dark=#121212}">
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
 
     <ScrollView>
         <VerticalStackLayout Spacing="25" Padding="25">
@@ -14,32 +14,32 @@
             <VerticalStackLayout Spacing="5">
                 <Label Text="DETALLES DE LA TAREA" 
                        FontSize="12" 
-                       TextColor="{AppThemeBinding Light=#666, Dark=#AAA}" 
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" 
                        FontAttributes="Bold"
                        Margin="5,0"/>
-                
+
                 <Border StrokeShape="RoundRectangle 10" 
                         StrokeThickness="0"
                         Padding="15,5"
-                        BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
+                        BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
                     <Entry Placeholder="¿Qué hay que hacer?" 
                            PlaceholderColor="Gray"
                            Text="{Binding NewTaskTitle}"
                            FontSize="16"
-                           TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                 </Border>
 
                 <Border StrokeShape="RoundRectangle 10" 
                         StrokeThickness="0"
                         Padding="15,10"
                         Margin="0,10,0,0"
-                        BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
+                        BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
                     <Editor Placeholder="Añadir notas o descripción..." 
                             PlaceholderColor="Gray"
                             HeightRequest="120"
                             Text="{Binding NewTaskDescription}"
                             FontSize="14"
-                            TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
                             AutoSize="TextChanges"/>
                 </Border>
             </VerticalStackLayout>
@@ -47,31 +47,36 @@
             <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#EEE, Dark=#333}" />
 
             <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
-                
+
                 <VerticalStackLayout Grid.Column="0" Spacing="8">
-                    <Label Text="Fecha Límite" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="Fecha Límite" 
+                           FontAttributes="Bold" 
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                     <Border StrokeShape="RoundRectangle 8"
                             Stroke="{AppThemeBinding Light=#DDD, Dark=#444}"
                             StrokeThickness="1"
-                            Padding="0"
                             BackgroundColor="Transparent">
                         <DatePicker Date="{Binding NewTaskDate}" 
                                     MinimumDate="01/01/2024"
-                                    TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                     </Border>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Grid.Column="1" Spacing="8">
-                    <Label Text="Prioridad" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="Prioridad" 
+                           FontAttributes="Bold" 
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                     <Border StrokeShape="RoundRectangle 8"
                             Stroke="{AppThemeBinding Light=#DDD, Dark=#444}"
                             StrokeThickness="1"
-                            Padding="0"
                             BackgroundColor="Transparent">
                         <Picker x:Name="PriorityPicker"
                                 SelectedItem="{Binding NewTaskPriority}"
                                 Title="Nivel"
-                                TextColor="{AppThemeBinding Light=Black, Dark=White}">
+                                TitleColor="Gray"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}">
                         </Picker>
                     </Border>
                 </VerticalStackLayout>
@@ -81,12 +86,13 @@
                     Margin="0,30,0,0"
                     HeightRequest="55"
                     CornerRadius="12"
-                    BackgroundColor="#6200EE"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
                     FontAttributes="Bold"
                     FontSize="16"
                     Command="{Binding AddTaskCommand}">
                 <Button.Shadow>
-                    <Shadow Brush="#6200EE" Radius="10" Opacity="0.4" Offset="0,4"/>
+                    <Shadow Brush="{StaticResource PrimaryDark}" Radius="10" Opacity="0.4" Offset="0,4"/>
                 </Button.Shadow>
             </Button>
 

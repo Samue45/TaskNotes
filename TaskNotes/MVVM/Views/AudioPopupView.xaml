@@ -9,7 +9,7 @@
 
     <Border StrokeShape="RoundRectangle 24"
             StrokeThickness="0"
-            Background="White"
+            BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
             Padding="24"
             WidthRequest="320"
             HorizontalOptions="Center"
@@ -31,20 +31,19 @@
 
                 <Label Text="Escuchando..." 
                        FontSize="12" 
-                       TextColor="Red"
+                       TextColor="{StaticResource Error}"
                        IsVisible="{Binding IsListening}"
                        HorizontalOptions="Center"/>
             </VerticalStackLayout>
 
-            <Border Background="#F5F5F5"
+            <Border BackgroundColor="{AppThemeBinding Light=#F0F0F0, Dark=#2C2C2C}"
                     StrokeThickness="0"
                     StrokeShape="RoundRectangle 12"
-                    Padding="10"
-                    Margin="0,0,0,0">
-                <ScrollView HeightRequest="120" MinimumHeightRequest="100">
+                    Padding="12">
+                <ScrollView HeightRequest="100">
                     <Label Text="{Binding NewTaskTitle}"
                            FontSize="16"
-                           TextColor="#333333"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
                            HorizontalTextAlignment="Center"
                            VerticalOptions="Center" />
                 </ScrollView>
@@ -57,6 +56,7 @@
                         CornerRadius="25"
                         HeightRequest="50"
                         BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
                         FontAttributes="Bold">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding IsListening}" Value="True">
@@ -73,16 +73,16 @@
                             Command="{Binding StopListeningCommand}"
                             IsEnabled="{Binding IsListening}"
                             CornerRadius="25"
-                            BackgroundColor="#FFEBEB"
-                            TextColor="Red"
+                            BackgroundColor="{StaticResource ErrorLight}"
+                            TextColor="{StaticResource Error}"
                             FontSize="14" />
 
                     <Button Grid.Column="1"
                             Text="Listo"
                             Clicked="OnCloseClicked"
                             CornerRadius="25"
-                            BackgroundColor="#F0F0F0"
-                            TextColor="#444444"
+                            BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#3D3D3D}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
                             FontSize="14" />
                 </Grid>
 

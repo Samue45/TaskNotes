@@ -6,6 +6,7 @@
              xmlns:converters="clr-namespace:TaskNotes.MVVM.Converters"
              x:Class="TaskNotes.MVVM.Views.HomePageView"
              x:DataType="vm:TaskGestorViewModel"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
              Title="Block de Tareas">
 
     <ContentPage.Resources>
@@ -22,7 +23,7 @@
                FontAttributes="Bold"
                HorizontalOptions="Center"
                HorizontalTextAlignment="Center"
-               TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark=White}"
+               TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource TextPrimaryDark}}"
                Margin="0,10,0,20" />
 
         <Grid Grid.Row="1">
@@ -37,19 +38,19 @@
                 <CollectionView.EmptyView>
                     <Grid VerticalOptions="Center" HorizontalOptions="Center">
                         <VerticalStackLayout Spacing="15" VerticalOptions="Center" HorizontalOptions="Center">
-                            <Label Text="📝" 
-                                   FontSize="50" 
+                            <Label Text="🌿" 
+                                   FontSize="60" 
                                    HorizontalTextAlignment="Center" 
-                                   Opacity="0.5"/>
+                                   Opacity="0.8"/>
                             <Label Text="No hay tareas pendientes" 
                                    FontSize="18"
                                    FontAttributes="Bold"
                                    HorizontalTextAlignment="Center" 
-                                   TextColor="Gray"/>
-                            <Label Text="Toca el botón '+' para empezar" 
+                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
+                            <Label Text="Toca el botón '+' para cultivar nuevas ideas" 
                                    FontSize="14"
                                    HorizontalTextAlignment="Center" 
-                                   TextColor="Silver"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"/>
                         </VerticalStackLayout>
                     </Grid>
                 </CollectionView.EmptyView>
@@ -59,51 +60,120 @@
                         <SwipeView>
                             <SwipeView.RightItems>
                                 <SwipeItems>
-                                    <SwipeItem Text="Eliminar"
-                                               BackgroundColor="Red"
+                                    <SwipeItem Text="Borrar" 
+                                               BackgroundColor="{StaticResource Error}" 
                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskGestorViewModel}}, Path=DeleteTaskCommand}"
-                                               CommandParameter="{Binding .}" />
+                                               CommandParameter="{Binding .}"/>
                                 </SwipeItems>
                             </SwipeView.RightItems>
 
                             <Border Padding="15" 
-                                    Stroke="LightGray" 
-                                    StrokeShape="RoundRectangle 12" 
-                                    BackgroundColor="{AppThemeBinding Light=White, Dark=#252525}">
+                                    StrokeShape="RoundRectangle 16" 
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}">
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroupList>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal">
+                                                <VisualState.Setters>
+                                                    <Setter Property="StrokeThickness" Value="0" />
+                                                    <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                            <VisualState x:Name="PointerOver">
+                                                <VisualState.Setters>
+                                                    <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                                                    <Setter Property="StrokeThickness" Value="2" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateGroupList>
+                                </VisualStateManager.VisualStateGroups>
+
+                                <Border.Shadow>
+                                    <Shadow Brush="Black" Offset="0,2" Radius="5" Opacity="0.1" />
+                                </Border.Shadow>
 
                                 <Grid ColumnDefinitions="Auto, *, Auto, Auto">
 
                                     <CheckBox IsChecked="{Binding IsCompleted}" 
                                               Grid.Column="0"
+                                              Color="{StaticResource Primary}"
                                               VerticalOptions="Center"/>
 
-                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2" Margin="10,0">
-                                        <Label Text="{Binding Title}" 
-                                               FontAttributes="Bold" 
-                                               FontSize="16"
-                                               TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToStrikethroughConverter}}"/>
-                                        <Label Text="{Binding Description}" 
-                                               FontSize="12" 
-                                               TextColor="Gray" 
-                                               LineBreakMode="TailTruncation"/>
-                                    </VerticalStackLayout>
+                                    <Grid Grid.Column="1" 
+                                          RowDefinitions="Auto, Auto" 
+                                          VerticalOptions="Center" 
+                                          Margin="10,0">
+
+                                        <Grid Grid.Row="0" HorizontalOptions="Start">
+                                            <Label Text="{Binding Title}" 
+                                                   FontAttributes="Bold" 
+                                                   FontSize="16"
+                                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
+                                                   TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToStrikethroughConverter}}"/>
+
+                                            <BoxView HeightRequest="2.5"
+                                                     BackgroundColor="{StaticResource AccentDark}" 
+                                                     VerticalOptions="Center"
+                                                     IsVisible="{Binding IsCompleted}"
+                                                     Margin="0,2,0,0"
+                                                     InputTransparent="True"/>
+                                        </Grid>
+
+                                        <Label Grid.Row="1" 
+                                               Text="{Binding Description}" 
+                                               FontSize="13" 
+                                               TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" 
+                                               LineBreakMode="WordWrap"/>
+                                    </Grid>
 
                                     <VerticalStackLayout Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,10,0">
-                                        <Label Text="{Binding Priority}" FontSize="15" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Purple, Dark=Plum}"/>
-                                        <Label Text="{Binding DueDate, StringFormat='{0:dd/MM}'}" FontSize="11" HorizontalOptions="End"/>
+                                        <Label Text="{Binding Priority}" 
+                                               FontSize="15" 
+                                               FontAttributes="Bold" 
+                                               TextColor="{StaticResource Accent}"
+                                               HorizontalOptions="End"/>
+
+                                        <Label Text="{Binding DueDate, StringFormat='{0:dd MMM}'}" 
+                                               FontSize="11" 
+                                               HorizontalOptions="End"
+                                               TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"/>
                                     </VerticalStackLayout>
 
                                     <Button Grid.Column="3"
                                             Text="🗑️"
                                             BackgroundColor="Transparent"
-                                            TextColor="Red"
-                                            FontSize="27"
+                                            TextColor="{StaticResource Accent}"
+                                            FontSize="25"
                                             Padding="0"
-                                            HeightRequest="40"
-                                            WidthRequest="40"
+                                            HeightRequest="36"
+                                            WidthRequest="36"
                                             VerticalOptions="Center"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskGestorViewModel}}, Path=DeleteTaskCommand}"
-                                            CommandParameter="{Binding .}"/>
+                                            CommandParameter="{Binding .}">
+
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroupList>
+                                                <VisualStateGroup x:Name="CommonStates">
+                                                    <VisualState x:Name="Normal" />
+                                                    <VisualState x:Name="PointerOver">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="Scale" Value="1.2" />
+                                                            <Setter Property="Rotation" Value="15" />
+                                                            <Setter Property="Opacity" Value="1" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Pressed">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="Scale" Value="0.9" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateGroupList>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Button>
+
                                 </Grid>
                             </Border>
                         </SwipeView>
@@ -112,27 +182,72 @@
             </CollectionView>
 
             <HorizontalStackLayout HorizontalOptions="End" 
-                                   VerticalOptions="End" 
-                                   Spacing="15" 
-                                   Margin="0,0,10,20">
+                       VerticalOptions="End" 
+                       Spacing="15" 
+                       Margin="0,0,10,20">
 
                 <Button Text="🎙️"
-                        FontSize="24"
-                        WidthRequest="60"
-                        HeightRequest="60"
-                        CornerRadius="30"
-                        BackgroundColor="{StaticResource Primary}"
-                        TextColor="White"
-                        Shadow="{Shadow Brush=Black, Offset='2,2', Opacity=0.2}"
-                        Clicked="OnShowAudioPopupClicked"/>
+            FontSize="27"
+            WidthRequest="64"
+            HeightRequest="64"
+            CornerRadius="32"
+            BackgroundColor="{StaticResource PrimaryLight}"
+            Clicked="OnShowAudioPopupClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="Black" Offset="0,4" Opacity="0.2" Radius="6"/>
+                    </Button.Shadow>
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="1.1" />
+                                        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.95" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Button>
 
                 <Button Text="+"
-                        FontSize="28"
-                        WidthRequest="60"
-                        HeightRequest="60"
-                        CornerRadius="30"
-                        Shadow="{Shadow Brush=Black, Offset='2,2', Opacity=0.2}"
-                        Clicked="OnAddTaskClicked"/>
+            FontSize="30"
+            WidthRequest="64"
+            HeightRequest="64"
+            CornerRadius="32"
+            BackgroundColor="{StaticResource Primary}"
+            TextColor="{StaticResource SurfaceLight}"
+            Clicked="OnAddTaskClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="{StaticResource PrimaryDark}" Offset="0,5" Opacity="0.4" Radius="8"/>
+                    </Button.Shadow>
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="1.1" />
+                                        <Setter Property="Rotation" Value="90" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.95" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Button>
             </HorizontalStackLayout>
         </Grid>
     </Grid>
