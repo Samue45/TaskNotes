@@ -4,27 +4,24 @@ namespace TaskNotes.MVVM.Models;
 
 public enum TaskPriority
 {
-    Baja = 2,
+    Alta = 0,
     Media = 1,
-    Alta = 0
+    Baja = 2
 }
 
 public partial class TaskItem : ObservableObject
 {
     [ObservableProperty]
-    private string id;
+    private Guid id;
 
     [ObservableProperty]
-    private string title;
+    private string title = string.Empty;
 
     [ObservableProperty]
-    private string description;
+    private string description = string.Empty;
 
     [ObservableProperty]
     private DateTime dueDate;
-
-    [ObservableProperty]
-    private TimeSpan dueTime; // Añadido por si quieres hora específica
 
     [ObservableProperty]
     private TaskPriority priority;
@@ -32,30 +29,11 @@ public partial class TaskItem : ObservableObject
     [ObservableProperty]
     private bool isCompleted;
 
-    // Propiedad calculada solo para la UI (Color de la etiqueta)
-    public Color PriorityColor
-    {
-        get
-        {
-            return Priority switch
-            {
-                TaskPriority.Alta => Color.FromArgb("#FF6B6B"),   // Rojo suave
-                TaskPriority.Media => Color.FromArgb("#FFD93D"),  // Amarillo suave
-                TaskPriority.Baja => Color.FromArgb("#6BCB77"),   // Verde suave
-                _ => Colors.Gray
-            };
-        }
-    }
-
-    partial void OnPriorityChanged(TaskPriority value)
-    {
-        OnPropertyChanged(nameof(PriorityColor));
-    }
-
     public TaskItem()
     {
-        Id = Guid.NewGuid().ToString();
+        Id = Guid.NewGuid();
         DueDate = DateTime.Now;
         Priority = TaskPriority.Baja;
+        IsCompleted = false;
     }
 }

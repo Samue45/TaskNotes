@@ -12,8 +12,8 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:BoolToTitleConverter x:Key="BoolToTitleConverter" />
-
             <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
+            <converters:TaskPriorityToColorConverter x:Key="PriorityToColor" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -85,7 +85,7 @@
                                     SelectedItem="{Binding NewTaskPriority}"
                                     Title="Seleccionar prioridad"
                                     FontSize="15"
-                                    TextColor="{Binding PriorityColor}"/>
+                                    TextColor="{Binding Priority, Converter={StaticResource PriorityToColor}}"/>
 
                         </VerticalStackLayout>
 

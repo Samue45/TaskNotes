@@ -12,6 +12,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:BoolToStrikethroughConverter x:Key="BoolToStrikethroughConverter"/>
+            <converters:TaskPriorityToColorConverter x:Key="PriorityToColor" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -171,7 +172,7 @@
                                                FontSize="15" 
                                                FontAttributes="Bold" 
                                                HorizontalOptions="End"
-                                               TextColor="{Binding PriorityColor}"/>
+                                               TextColor="{Binding Priority, Converter={StaticResource PriorityToColor}}"/>
                                         <Label Text="{Binding DueDate, StringFormat='{0:dd MMM}'}" 
                                                FontSize="11" 
                                                HorizontalOptions="End"
