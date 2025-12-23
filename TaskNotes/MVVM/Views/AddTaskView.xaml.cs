@@ -1,4 +1,3 @@
-using TaskNotes.MVVM.Models;
 using TaskNotes.MVVM.ViewModels;
 
 namespace TaskNotes.MVVM.Views;

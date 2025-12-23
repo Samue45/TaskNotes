@@ -1,14 +1,12 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Maui.Graphics;
-using Microsoft.VisualBasic;
 
 namespace TaskNotes.MVVM.Models;
 
 public enum TaskPriority
 {
-    Baja,
-    Media,
-    Alta
+    Baja = 2,
+    Media = 1,
+    Alta = 0
 }
 
 public partial class TaskItem : ObservableObject

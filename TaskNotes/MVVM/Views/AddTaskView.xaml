@@ -2,11 +2,20 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:TaskNotes.MVVM.ViewModels"
+             xmlns:converters="clr-namespace:TaskNotes.MVVM.Converters"
              x:Class="TaskNotes.MVVM.Views.AddTaskView"
              x:DataType="vm:TaskGestorViewModel"
-             Title="Nueva tarea"
-             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight},
+             Title="{Binding IsEditing, Converter={StaticResource BoolToTitleConverter}}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, 
                                               Dark={StaticResource BackgroundDark}}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToTitleConverter x:Key="BoolToTitleConverter" />
+
+            <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="28">
@@ -71,14 +80,12 @@
                             <Label Text="Prioridad"
                                    FontSize="13"
                                    FontAttributes="Bold"
-                                   TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
-                                                   Dark={StaticResource TextSecondaryDark}}"/>
+                                   />
                             <Picker ItemsSource="{Binding Priorities}"
                                     SelectedItem="{Binding NewTaskPriority}"
                                     Title="Seleccionar prioridad"
                                     FontSize="15"
-                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight},
-                                                                Dark={StaticResource TextPrimaryDark}}"/>
+                                    TextColor="{Binding PriorityColor}"/>
 
                         </VerticalStackLayout>
 
@@ -87,7 +94,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Button Text="Guardar tarea"
+            <Button Text="{Binding SaveButtonText}"
                     HeightRequest="52"
                     CornerRadius="14"
                     BackgroundColor="{StaticResource Primary}"

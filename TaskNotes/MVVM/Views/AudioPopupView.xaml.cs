@@ -15,29 +15,21 @@ public partial class AudioPopupView : Popup
 
     private async void OnCloseClicked(object sender, EventArgs e)
     {
-        var vm = BindingContext as TaskGestorViewModel;
+        var vm = this.BindingContext as TaskGestorViewModel;
 
         if (vm != null)
         {
-            
-            if (vm.IsListening)
-            {
-                
-                if (vm.StopListeningCommand.CanExecute(null))
-                    vm.StopListeningCommand.Execute(null);
-            }
+            // 1. Detenemos y esperamos el proceso de audio
+            await vm.FinalizeAudioAsync();
 
-           
-            if (!string.IsNullOrWhiteSpace(vm.NewTaskTitle))
+            // 2. Ejecutamos el guardado automático si el título no está vacío
+            if (vm.AddTaskCommand.CanExecute(null) && !string.IsNullOrWhiteSpace(vm.NewTaskTitle))
             {
-                if (vm.AddTaskCommand.CanExecute(null))
-                {
-                    
-                    vm.AddTaskCommand.Execute(null);
-                }
+                vm.AddTaskCommand.Execute(null);
             }
         }
 
+        // 3. Cerramos el Popup (esto ahora siempre funcionará al primer clic)
         await CloseAsync();
     }
 }
