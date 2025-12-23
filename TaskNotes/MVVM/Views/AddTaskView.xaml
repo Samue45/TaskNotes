@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ===================================================== -->
+<!-- PÁGINA: AÑADIR / EDITAR TAREA -->
+<!-- Usa MVVM con TaskGestorViewModel -->
+<!-- El título depende de IsEditing mediante converter -->
+<!-- ===================================================== -->
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:TaskNotes.MVVM.ViewModels"
@@ -9,18 +15,35 @@
              BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, 
                                               Dark={StaticResource BackgroundDark}}">
 
+    <!-- ===================================================== -->
+    <!-- RECURSOS LOCALES -->
+    <!-- ===================================================== -->
     <ContentPage.Resources>
         <ResourceDictionary>
+
+            <!-- Convierte IsEditing en el título de la página -->
             <converters:BoolToTitleConverter x:Key="BoolToTitleConverter" />
+
+            <!-- Convierte bool en opacidad -->
             <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
+
+            <!-- Asigna color visual según la prioridad -->
             <converters:TaskPriorityToColorConverter x:Key="PriorityToColor" />
+
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <!-- ===================================================== -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ===================================================== -->
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="28">
 
-            <!-- Formulario -->
+        <VerticalStackLayout Padding="20"
+                             Spacing="28">
+
+            <!-- ================================================= -->
+            <!-- TARJETA DEL FORMULARIO -->
+            <!-- ================================================= -->
             <Border StrokeShape="RoundRectangle 16"
                     BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight},
                                                       Dark={StaticResource SurfaceDark}}"
@@ -28,13 +51,14 @@
 
                 <VerticalStackLayout Spacing="20">
 
+                    <!-- Cabecera de sección -->
                     <Label Text="Detalles"
                            FontSize="13"
                            FontAttributes="Bold"
                            TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                    Dark={StaticResource TextSecondaryDark}}"/>
 
-                    <!-- Título -->
+                    <!-- TÍTULO DE LA TAREA -->
                     <Entry Placeholder="¿Qué hay que hacer?"
                            Text="{Binding NewTaskTitle}"
                            FontSize="17"
@@ -43,7 +67,7 @@
                            PlaceholderColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                               Dark={StaticResource TextSecondaryDark}}"/>
 
-                    <!-- Descripción -->
+                    <!-- DESCRIPCIÓN -->
                     <Editor Placeholder="Añadir notas o descripción…"
                             Text="{Binding NewTaskDescription}"
                             FontSize="15"
@@ -54,18 +78,20 @@
                             PlaceholderColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                                Dark={StaticResource TextSecondaryDark}}"/>
 
-                    <!-- Fecha / Prioridad -->
+                    <!-- FECHA / PRIORIDAD -->
                     <Grid ColumnDefinitions="*,*"
                           ColumnSpacing="16">
 
-                        <!-- Fecha -->
+                        <!-- FECHA LÍMITE -->
                         <VerticalStackLayout Grid.Column="0"
                                              Spacing="6">
+
                             <Label Text="Fecha límite"
                                    FontSize="13"
                                    FontAttributes="Bold"
                                    TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight},
                                                    Dark={StaticResource TextSecondaryDark}}"/>
+
                             <DatePicker Date="{Binding NewTaskDate}"
                                         MinimumDate="01/01/2024"
                                         Margin="0,15,0,0"
@@ -74,19 +100,21 @@
                                                                 Dark={StaticResource TextPrimaryDark}}"/>
                         </VerticalStackLayout>
 
-                        <!-- Prioridad -->
+                        <!-- PRIORIDAD -->
                         <VerticalStackLayout Grid.Column="1"
                                              Spacing="6">
+
                             <Label Text="Prioridad"
                                    FontSize="13"
-                                   FontAttributes="Bold"
-                                   />
+                                   FontAttributes="Bold"/>
+
+                            <!-- Picker enlazado correctamente a NewTaskPriority -->
                             <Picker ItemsSource="{Binding Priorities}"
                                     SelectedItem="{Binding NewTaskPriority}"
                                     Title="Seleccionar prioridad"
                                     FontSize="15"
-                                    TextColor="{Binding Priority, Converter={StaticResource PriorityToColor}}"/>
-
+                                    TextColor="{Binding NewTaskPriority,
+                                                        Converter={StaticResource PriorityToColor}}"/>
                         </VerticalStackLayout>
 
                     </Grid>
@@ -94,6 +122,9 @@
                 </VerticalStackLayout>
             </Border>
 
+            <!-- ================================================= -->
+            <!-- BOTÓN GUARDAR -->
+            <!-- ================================================= -->
             <Button Text="{Binding SaveButtonText}"
                     HeightRequest="52"
                     CornerRadius="14"
@@ -103,8 +134,8 @@
                     FontSize="16"
                     Command="{Binding AddTaskCommand}"
                     IsEnabled="{Binding IsFormValid}"
-                    Opacity="{Binding IsFormValid, Converter={StaticResource BoolToOpacityConverter}}">
-            </Button>
+                    Opacity="{Binding IsFormValid,
+                                      Converter={StaticResource BoolToOpacityConverter}}"/>
 
         </VerticalStackLayout>
     </ScrollView>

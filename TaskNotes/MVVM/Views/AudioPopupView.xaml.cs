@@ -1,35 +1,50 @@
-using CommunityToolkit.Maui.Views;
+﻿using CommunityToolkit.Maui.Views;
 using TaskNotes.MVVM.ViewModels;
 
 namespace TaskNotes.MVVM.Views;
 
 public partial class AudioPopupView : Popup
 {
+    // Evita que el botón se ejecute más de una vez
+    private bool _isClosing;
+
     public AudioPopupView(TaskGestorViewModel viewModel)
     {
         InitializeComponent();
-        BindingContext = viewModel;
-        this.BackgroundColor = Colors.Transparent;
 
+        BindingContext = viewModel;
+
+        BackgroundColor = Colors.Transparent;
     }
 
     private async void OnCloseClicked(object sender, EventArgs e)
     {
-        var vm = this.BindingContext as TaskGestorViewModel;
+        // Protección contra doble clic
+        if (_isClosing)
+            return;
 
-        if (vm != null)
+        _isClosing = true;
+
+        if (BindingContext is not TaskGestorViewModel vm)
         {
-            // 1. Detenemos y esperamos el proceso de audio
-            await vm.FinalizeAudioAsync();
-
-            // 2. Ejecutamos el guardado autom�tico si el t�tulo no est� vac�o
-            if (vm.AddTaskCommand.CanExecute(null) && !string.IsNullOrWhiteSpace(vm.NewTaskTitle))
-            {
-                vm.AddTaskCommand.Execute(null);
-            }
+            await CloseAsync();
+            return;
         }
 
-        // 3. Cerramos el Popup (esto ahora siempre funcionar� al primer clic)
+        // 1️º Finalizamos correctamente el proceso de audio
+        // (detiene el micro y espera el resultado final)
+        await vm.FinalizeAudioAsync();
+
+        // 2️º Guardado automático SOLO si:
+        // - Hay texto
+        // - No está ya guardando
+        // - No está escuchando
+        if (!string.IsNullOrWhiteSpace(vm.NewTaskTitle) && vm.CanSave)
+        {
+            vm.AddTaskCommand.Execute(null);
+        }
+
+        // 3️º Cerramos el popup (una sola vez, seguro)
         await CloseAsync();
     }
 }

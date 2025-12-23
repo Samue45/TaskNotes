@@ -9,54 +9,73 @@ public partial class HomePageView : ContentPage
     public HomePageView(TaskGestorViewModel viewModel)
     {
         InitializeComponent();
+
+        // Asignamos el ViewModel a la vista
         BindingContext = viewModel;
     }
 
-    // --- NUEVO: Lógica del botón de Filtro ---
+    // ============================
+    // BOTÓN FILTRAR
+    // ============================
+    [Obsolete]
     private async void OnFilterClicked(object sender, EventArgs e)
     {
-        // 1. Mostrar ActionSheet nativo (mejor UX que botones sueltos)
+        if (BindingContext is not TaskGestorViewModel viewModel)
+            return;
+
+        // Mostrar opciones de filtrado
         string action = await DisplayActionSheet(
             "Filtrar tareas por prioridad:",
             "Cancelar",
             null,
             "Todas", "Alta", "Media", "Baja");
 
-        // 2. Si el usuario cancela, no hacemos nada
-        if (action == "Cancelar" || action == null)
+        // Si se cancela o no se selecciona nada, salimos
+        if (string.IsNullOrWhiteSpace(action) || action == "Cancelar")
             return;
 
-        // 3. Comunicar al ViewModel
-        var viewModel = (TaskGestorViewModel)BindingContext;
-
-        // Asegúrate de crear este Command en tu ViewModel
-        if (viewModel.FilterTasksCommand.CanExecute(action))
-        {
-            viewModel.FilterTasksCommand.Execute(action);
-        }
+        // Ejecutamos directamente el comando (CanExecute no aporta aquí)
+        viewModel.FilterTasksCommand.Execute(action);
     }
-    // ------------------------------------------
 
+    // ============================
+    // EDITAR TAREA
+    // ============================
     private async void OnEditTaskTapped(object sender, TappedEventArgs e)
     {
-        if (e.Parameter is TaskItem taskSeleccionada)
-        {
-            var viewModel = (TaskGestorViewModel)BindingContext;
-            viewModel.PrepareForEdit(taskSeleccionada);
-            await Navigation.PushAsync(new AddTaskView(viewModel));
-        }
-    }
+        if (BindingContext is not TaskGestorViewModel viewModel)
+            return;
 
-    private async void OnAddTaskClicked(object sender, EventArgs e)
-    {
-        var viewModel = (TaskGestorViewModel)BindingContext;
-        viewModel.PrepareForNew();
+        if (e.Parameter is not TaskItem taskSeleccionada)
+            return;
+
+        viewModel.PrepareForEdit(taskSeleccionada);
+
         await Navigation.PushAsync(new AddTaskView(viewModel));
     }
 
+    // ============================
+    // AÑADIR TAREA
+    // ============================
+    private async void OnAddTaskClicked(object sender, EventArgs e)
+    {
+        if (BindingContext is not TaskGestorViewModel viewModel)
+            return;
+
+        viewModel.PrepareForNew();
+
+        await Navigation.PushAsync(new AddTaskView(viewModel));
+    }
+
+    // ============================
+    // POPUP DE VOZ
+    // ============================
     private void OnShowAudioPopupClicked(object sender, EventArgs e)
     {
-        var popup = new AudioPopupView((TaskGestorViewModel)this.BindingContext);
+        if (BindingContext is not TaskGestorViewModel viewModel)
+            return;
+
+        var popup = new AudioPopupView(viewModel);
         this.ShowPopup(popup);
     }
 }

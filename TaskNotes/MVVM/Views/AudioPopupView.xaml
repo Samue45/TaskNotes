@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ===================================================== -->
+<!-- POPUP DE DICTADO POR VOZ -->
+<!-- Implementado con CommunityToolkit.Maui Popup -->
+<!-- DataBinding directo al TaskGestorViewModel -->
+<!-- ===================================================== -->
 <toolkit:Popup
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -7,6 +13,10 @@
     x:Class="TaskNotes.MVVM.Views.AudioPopupView"
     x:DataType="vm:TaskGestorViewModel">
 
+    <!-- ===================================================== -->
+    <!-- CONTENEDOR PRINCIPAL DEL POPUP -->
+    <!-- Border actúa como tarjeta/modal -->
+    <!-- ===================================================== -->
     <Border StrokeShape="RoundRectangle 24"
             StrokeThickness="0"
             BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
@@ -15,32 +25,65 @@
             HorizontalOptions="Center"
             VerticalOptions="Center">
 
+        <!-- Sombra para dar sensación de elevación -->
         <Border.Shadow>
-            <Shadow Brush="Black" Offset="0,10" Radius="20" Opacity="0.2" />
+            <Shadow Brush="Black"
+                    Offset="0,10"
+                    Radius="20"
+                    Opacity="0.2" />
         </Border.Shadow>
 
+        <!-- ===================================================== -->
+        <!-- LAYOUT PRINCIPAL -->
+        <!-- Organiza todo el contenido verticalmente -->
+        <!-- ===================================================== -->
         <VerticalStackLayout Spacing="16">
 
-            <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
-                <Label Text="🎙️" FontSize="40" HorizontalOptions="Center" />
-                <Label Text="Dictado por Voz" 
-                       FontSize="20" 
-                       FontAttributes="Bold" 
+            <!-- ================================================= -->
+            <!-- CABECERA -->
+            <!-- Icono + título + estado de escucha -->
+            <!-- ================================================= -->
+            <VerticalStackLayout Spacing="8"
+                                 HorizontalOptions="Center">
+
+                <!-- Icono representativo del dictado por voz -->
+                <Label Text="🎙️"
+                       FontSize="40"
+                       HorizontalOptions="Center" />
+
+                <!-- Título del popup -->
+                <!-- Usa un color fijo (TextPrimaryDark), no dependiente del tema -->
+                <Label Text="Dictado por Voz"
+                       FontSize="20"
+                       FontAttributes="Bold"
                        TextColor="{StaticResource TextPrimaryDark}"
                        HorizontalOptions="Center"/>
 
-                <Label Text="Escuchando..." 
-                       FontSize="12" 
+                <!-- Indicador visual de estado activo -->
+                <!-- Visible solo cuando el micrófono está escuchando -->
+                <!-- El color Error se usa como alerta visual, no como error funcional -->
+                <Label Text="Escuchando..."
+                       FontSize="12"
                        TextColor="{StaticResource Error}"
                        IsVisible="{Binding IsListening}"
                        HorizontalOptions="Center"/>
             </VerticalStackLayout>
 
+            <!-- ================================================= -->
+            <!-- ÁREA DE TEXTO DICTADO -->
+            <!-- Muestra en tiempo real el texto reconocido -->
+            <!-- ================================================= -->
             <Border BackgroundColor="{AppThemeBinding Light=#F0F0F0, Dark=#2C2C2C}"
                     StrokeThickness="0"
                     StrokeShape="RoundRectangle 12"
                     Padding="12">
+
+                <!-- ScrollView evita que el popup crezca -->
+                <!-- cuando el texto dictado aumenta -->
                 <ScrollView HeightRequest="100">
+
+                    <!-- Texto enlazado al ViewModel -->
+                    <!-- Se actualiza conforme avanza el dictado -->
                     <Label Text="{Binding NewTaskTitle}"
                            FontSize="16"
                            TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
@@ -49,8 +92,14 @@
                 </ScrollView>
             </Border>
 
+            <!-- ================================================= -->
+            <!-- CONTROLES DE ACCIÓN -->
+            <!-- Gestión del flujo de grabación -->
+            <!-- ================================================= -->
             <VerticalStackLayout Spacing="12">
 
+                <!-- BOTÓN: EMPEZAR A ESCUCHAR -->
+                <!-- Lanza el reconocimiento de voz -->
                 <Button Text="Empezar a Escuchar"
                         Command="{Binding StartListeningCommand}"
                         CornerRadius="25"
@@ -58,16 +107,31 @@
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White"
                         FontAttributes="Bold">
+
+                    <!-- Cambios de estado cuando IsListening es true -->
                     <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsListening}" Value="True">
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding IsListening}"
+                                     Value="True">
+
+                            <!-- Se desactiva para evitar grabaciones múltiples -->
                             <Setter Property="IsEnabled" Value="False"/>
+
+                            <!-- Feedback visual de estado bloqueado -->
                             <Setter Property="Opacity" Value="0.5"/>
+
+                            <!-- Texto alternativo durante la grabación -->
                             <Setter Property="Text" Value="Grabando..."/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
 
-                <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                <!-- BOTONES SECUNDARIOS -->
+                <Grid ColumnDefinitions="*, *"
+                      ColumnSpacing="10">
+
+                    <!-- BOTÓN: DETENER -->
+                    <!-- Solo habilitado mientras se está escuchando -->
                     <Button Grid.Column="0"
                             Text="Detener"
                             Command="{Binding StopListeningCommand}"
@@ -77,6 +141,9 @@
                             TextColor="{StaticResource TextPrimaryDark}"
                             FontSize="14" />
 
+                    <!-- BOTÓN: LISTO -->
+                    <!-- Cierra el popup mediante code-behind -->
+                    <!-- Solución válida en Popup al no existir cierre directo por Command -->
                     <Button Grid.Column="1"
                             Text="Listo"
                             Clicked="OnCloseClicked"
